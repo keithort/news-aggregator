@@ -1,28 +1,59 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Route, Switch } from "react-router-dom";
+import posed, { PoseGroup } from "react-pose";
+import { Provider } from "react-redux";
+import store from "./store";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+import Header from "./Components/Header";
+import Layout from "./Components/Layout";
+import Footer from "./Components/Footer";
+
+import Home from "./Components/Home";
+import Feed from "./Components/Feed";
+
+const RouteContainer = posed.div({
+  enter: { opacity: 1, delay: 100, beforeChildren: true },
+  exit: { opacity: 0 }
+});
+
+const App = () => (
+  <Provider store={store}>
+    <Route
+      render={({ location }) => (
+        <>
+          <Header />
+          <Layout>
+            <PoseGroup>
+              <RouteContainer key={location}>
+                <Switch location={location}>
+                  <Route exact path="/" component={Home} key="home" />
+                  <Route
+                    exact
+                    path="/science"
+                    render={props => <Feed type="Science" />}
+                    key="science"
+                  />
+                  <Route
+                    exact
+                    path="/sports"
+                    render={props => <Feed type="Sports" />}
+                    key="sports"
+                  />
+                  <Route
+                    exact
+                    path="/technology"
+                    render={props => <Feed type="Technology" />}
+                    key="technology"
+                  />
+                </Switch>
+              </RouteContainer>
+            </PoseGroup>
+          </Layout>
+          <Footer />
+        </>
+      )}
+    />
+  </Provider>
+);
 
 export default App;
