@@ -7,10 +7,6 @@ import { fetchSectionArticles } from "../Actions/ArticlesActions";
 import Articles from "./Articles";
 
 class Feed extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.fetchSectionArticles(this.props.type);
   }
